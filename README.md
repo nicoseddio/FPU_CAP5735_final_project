@@ -13,9 +13,9 @@ Jump to:
 - [Project 1](#project-01--the-2017-boston-marathon) 
 ([markdown](project-01/project-01.md), [html](project-01/project-01.html))
 - [Project 2](#project-02--florida-lakes-schools--counties) 
-([markdown](project-01/project-02.md), [html](project-01/project-02.html))
+([markdown](project-02/project-02.md), [html](project-02/project-02.html))
 - [Project 3](#project-03--distributions--text-data) 
-([markdown](project-01/project-03.md), [html](project-01/project-03.html))
+([markdown](project-03/project-03.md), [html](project-03/project-03.html))
 
 ## Motivation
 
@@ -71,7 +71,7 @@ fields (Kenya, Ethiopia) from the broad recreational pack.
 ## Project 02 — Florida Lakes, Schools & Counties
 
 In [`project-02/`](project-02/) 
-([markdown](project-01/project-02.md), [html](project-01/project-02.html)) 
+([markdown](project-02/project-02.md), [html](project-02/project-02.html)) 
 I join three Florida spatial datasets — county
 boundaries, lakes, and public/private schools — to ask whether lake area has any
 relationship to school enrollment. After reconciling mismatched county names across
@@ -90,7 +90,7 @@ lakes alongside school locations.
 ## Project 03 — Distributions & Text Data
 
 In [`project-03/`](project-03/) 
-([markdown](project-01/project-03.md), [html](project-01/project-03.html))
+([markdown](project-03/project-03.md), [html](project-03/project-03.html))
 I explore two visualization families. First, the
 **distribution** of Tampa's daily high temperatures through histograms, density
 curves, a faceted density grid, and a ridgeline plot — revealing a striking "summer
