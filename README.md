@@ -7,6 +7,16 @@ and Reproducible Research* course. Each one applies the principles of effective,
 honest, and accessible visualization to a different dataset and a different family
 of charts — from distributions and spatial maps to text and modeling.
 
+**NOTE:** interactive charts do not render in the markdown versions.
+
+Jump to:
+- [Project 1](#project-01--the-2017-boston-marathon) 
+([markdown](project-01/project-01.md), [html](project-01/project-01.html))
+- [Project 2](#project-02--florida-lakes-schools--counties) 
+([markdown](project-01/project-02.md), [html](project-01/project-02.html))
+- [Project 3](#project-03--distributions--text-data) 
+([markdown](project-01/project-03.md), [html](project-01/project-03.html))
+
 ## Motivation
 
 The goal across all three projects is the same: let the **data tell its own story**
@@ -40,7 +50,9 @@ in [`data/README.md`](data/README.md). Spatial shapefiles are provided unzipped.
 
 ## Project 01 — The 2017 Boston Marathon
 
-In [`project-01/`](project-01/) I get to know a dataset of Boston Marathon finishers
+In [`project-01/`](project-01/) 
+([markdown](project-01/project-01.md), [html](project-01/project-01.html)) 
+I get to know a dataset of Boston Marathon finishers
 before plotting anything — confirming what `Bib`, `Division`, and `Country`
 actually represent — then explore four angles: 
 the distribution of runners across **division-placement numbers**, 
@@ -58,7 +70,9 @@ fields (Kenya, Ethiopia) from the broad recreational pack.
 
 ## Project 02 — Florida Lakes, Schools & Counties
 
-In [`project-02/`](project-02/) I join three Florida spatial datasets — county
+In [`project-02/`](project-02/) 
+([markdown](project-01/project-02.md), [html](project-01/project-02.html)) 
+I join three Florida spatial datasets — county
 boundaries, lakes, and public/private schools — to ask whether lake area has any
 relationship to school enrollment. After reconciling mismatched county names across
 the sources, the analysis moves from **interactive enrollment bar charts** to a
@@ -75,7 +89,9 @@ lakes alongside school locations.
 
 ## Project 03 — Distributions & Text Data
 
-In [`project-03/`](project-03/) I explore two visualization families. First, the
+In [`project-03/`](project-03/) 
+([markdown](project-01/project-03.md), [html](project-01/project-03.html))
+I explore two visualization families. First, the
 **distribution** of Tampa's daily high temperatures through histograms, density
 curves, a faceted density grid, and a ridgeline plot — revealing a striking "summer
 compression" where daily highs collapse into a tight band in the low 90s from June
@@ -120,8 +136,10 @@ a horizontal bar chart of the fifteen most frequent words across
    install.packages(c("tidyverse", "sf", "plotly", "ggridges",
                       "tidytext", "htmlwidgets", "broom"))
    ```
-3. Knit each `project-0X/project-0X.Rmd`. The YAML uses `keep_md: true`, so knitting
-   produces both an `.html` and a GitHub-friendly `.md` in each folder.
+3. Knit each `project-0X/project-0X.Rmd`. Knit to `HTML` to see interactive output,
+    knit to `github_document` to see markdown with static charts. These are kept
+    separate so that Github / markdown files display images 
+    instead of broken interactive chart html.
 
 ## AI Use Statement
 

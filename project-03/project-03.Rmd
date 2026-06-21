@@ -3,8 +3,9 @@ title: "project-03"
 author: "Nico Seddio"
 date: "2026-06-19"
 output:
+  github_document:
+    toc: true
   html_document:
-    keep_md: true
     toc: true
     toc_float: true
 ---
@@ -121,9 +122,18 @@ precip_plot <- weather_tpa %>%
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-ggplotly(precip_plot)
-htmlwidgets::saveWidget(ggplotly(precip_plot),"interactive_precip_plot.html", selfcontained = TRUE)
+#ggplotly(precip_plot)
+#htmlwidgets::saveWidget(ggplotly(precip_plot),"interactive_precip_plot.html", selfcontained = TRUE)
+if (knitr::pandoc_to(c("gfm", "markdown_github", "commonmark"))) {
+  print(precip_plot)
+} else {
+  htmlwidgets::saveWidget(ggplotly(precip_plot),"interactive_precip_plot.html", selfcontained = TRUE)
+  ggplotly(precip_plot)
+}
 ```
+
+(In Github / markdown, this renders as the static version. 
+[Click to view the interactive version](interactive_precip_plot.html))
 
 # PART 2: Visualizing Text Data — Billboard Top 100 Lyrics (2015)
 

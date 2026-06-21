@@ -3,8 +3,9 @@ title: "Mini Project 1"
 author: "Nico Seddio"
 date: "2026-05-29"
 output: 
+  github_document:
+    toc: true
   html_document:
-    keep_md: true
     toc: true
     toc_float: true
 ---
@@ -185,13 +186,19 @@ avg_pace_age_country_scatter <- marathon %>%
   scale_color_viridis_d(end = 0.8) +
   theme_minimal()
 #avg_pace_age_country_scatter
-ggsave("../figures/project-01-marathon-pace-age.png", width = 8, height = 5, dpi = 150)
-ggplotly(avg_pace_age_country_scatter)
-htmlwidgets::saveWidget(ggplotly(avg_pace_age_country_scatter),"interactive_avg_pace_age_country_scatter.html", selfcontained = TRUE)
+#ggsave("../figures/project-01-marathon-pace-age.png", width = 8, height = 5, dpi = 150)
+#ggplotly(avg_pace_age_country_scatter)
+#htmlwidgets::saveWidget(ggplotly(avg_pace_age_country_scatter),"interactive_avg_pace_age_country_scatter.html", selfcontained = TRUE)
+if (knitr::pandoc_to(c("gfm", "markdown_github", "commonmark"))) {
+  print(avg_pace_age_country_scatter)
+} else {
+  htmlwidgets::saveWidget(ggplotly(avg_pace_age_country_scatter),"interactive_avg_pace_age_country_scatter.html", selfcontained = TRUE)
+  ggplotly(avg_pace_age_country_scatter)
+}
 ```
 
-
-
+(In Github / markdown, this renders as the static version. 
+[Click to view the interactive version](interactive_avg_pace_age_country_scatter.html))
 
 # Report
 

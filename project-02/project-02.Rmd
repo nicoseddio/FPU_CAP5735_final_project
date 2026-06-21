@@ -2,8 +2,9 @@
 title: "Data Visualization - Mini-Project 2"
 author: "Nico Seddio `nseddio0283@floridapoly.edu`"
 output:
+  github_document:
+    toc: true
   html_document:
-    keep_md: true
     toc: true
     toc_float: true
 ---
@@ -107,10 +108,19 @@ enrollment_bar <- schools_by_county %>%
   scale_x_continuous(labels = scales::comma) +
   theme_minimal()
 #enrollment_bar
-ggplotly(enrollment_bar)
+#ggplotly(enrollment_bar)
 #save self-contained
-htmlwidgets::saveWidget(ggplotly(enrollment_bar),"interactive-enrollment-bar.html", selfcontained = TRUE)
+#htmlwidgets::saveWidget(ggplotly(enrollment_bar),"interactive-enrollment-bar.html", selfcontained = TRUE)
+if (knitr::pandoc_to(c("gfm", "markdown_github", "commonmark"))) {
+  print(enrollment_bar)
+} else {
+  htmlwidgets::saveWidget(ggplotly(enrollment_bar),"interactive-enrollment-bar.html", selfcontained = TRUE)
+  ggplotly(enrollment_bar)
+}
 ```
+
+(In Github / markdown, this renders as the static version. 
+[Click to view the interactive version](interactive-enrollment-bar.html))
 
 #### Five largest counties with operating enrollment
 
@@ -120,7 +130,7 @@ etc.). The interactivity here allows presenting the data in a visually interesti
 way as percentages of a whole while still allowing the user to drill down and get
 actual values like total enrollment and school operating type.
 
-```{r col_five, fig.alt="Column chart showing top 5 largest counties by total enrollment, each column as a county showing percentage division by school type (public, private, charter, etc.)."}
+```{r col_five, fig.alt="Column chart showing top 5 largest counties by total enrollment, each column as a county showing percentage division by school type (public, private, charter, etc.).",message=FALSE}
 enrollment_col <- schools %>% 
   group_by(COUNTY,OPERATING) %>% 
   summarise(total_enrollment = sum(ENROLLMENT, na.rm = TRUE)) %>% 
@@ -140,10 +150,18 @@ enrollment_col <- schools %>%
   scale_fill_viridis_d() +
   theme_minimal()
 #enrollment_col
-ggplotly(enrollment_col)
-htmlwidgets::saveWidget(ggplotly(enrollment_col),"interactive-enrollment-col.html", selfcontained = TRUE)
+#ggplotly(enrollment_col)
+#htmlwidgets::saveWidget(ggplotly(enrollment_col),"interactive-enrollment-col.html", selfcontained = TRUE)
+if (knitr::pandoc_to(c("gfm", "markdown_github", "commonmark"))) {
+  print(enrollment_col)
+} else {
+  htmlwidgets::saveWidget(ggplotly(enrollment_col),"interactive-enrollment-col.html", selfcontained = TRUE)
+  ggplotly(enrollment_col)
+}
 ```
 
+(In Github / markdown, this renders as the static version. 
+[Click to view the interactive version](interactive-enrollment-col.html))
 
 #### Lakes and Schools of Central Florida
 
@@ -174,9 +192,18 @@ the original map are supported by default though, so this demonstrates the extra
 work required to make sure the graph is compatible with interactive tools.
 
 ```{r map_florida_interactive, fig.alt="Interactive version of the map of central Florida from Pinellas to Osceola, Volusia to Hardee, with distribution of schools and lakes. Florida Poly is pointed out towards the center of the map.",message=FALSE}
-ggplotly(central_florida)
-htmlwidgets::saveWidget(ggplotly(central_florida),"interactive-central-florida.html", selfcontained = TRUE)
+#ggplotly(central_florida)
+#htmlwidgets::saveWidget(ggplotly(central_florida),"interactive-central-florida.html", selfcontained = TRUE)
+if (knitr::pandoc_to(c("gfm", "markdown_github", "commonmark"))) {
+  print(central_florida)
+} else {
+  htmlwidgets::saveWidget(ggplotly(central_florida),"interactive_central_florida.html", selfcontained = TRUE)
+  ggplotly(central_florida)
+}
 ```
+
+(In Github / markdown, this renders as the static version again. 
+[Click to view the interactive version](interactive_central_florida.html))
 
 #### Does lake area have an impact on total enrollment?
 
