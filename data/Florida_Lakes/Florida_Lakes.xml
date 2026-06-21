@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <origin/>
+                <pubdate>20020409</pubdate>
+                <title>Lakes (areas)</title>
+                <geoform>vector digital data</geoform>
+                <onlink>http://publicfiles.dep.state.fl.us/otis/gis/data/LAKES_AREAS.zip</onlink>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>The National Hydrography Dataset (NHD1:24K) statewide download of March 17th 2015, includes all surface waters in the state. Only a collection of named lakes or reservoirs extracted from the NHD are used in this layer.  Please reference metadata for contact information.  </abstract>
+            <purpose>This layer contains only those waterbodies (lake or reservoir) that are named in Florida</purpose>
+        </descript>
+        <timeperd>
+            <timeinfo>
+                <sngdate>
+                    <caldate>20150409</caldate>
+                </sngdate>
+            </timeinfo>
+            <current>Date data was updated in the GIS library</current>
+        </timeperd>
+        <status>
+            <progress>In work</progress>
+            <update>As needed</update>
+        </status>
+        <spdom>
+            <bounding>
+                <westbc>-87.443844</westbc>
+                <eastbc>-80.105756</eastbc>
+                <northbc>31.028443</northbc>
+                <southbc>25.02124</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>Lakes</themekey>
+                <themekey>Water Resources (Inland)</themekey>
+            </theme>
+            <theme>
+                <themekt>ISO 19115 Topic Categories</themekt>
+                <themekey>inlandWaters</themekey>
+            </theme>
+            <place>
+                <placekt>None</placekt>
+                <placekey>Florida</placekey>
+            </place>
+        </keywords>
+        <accconst>public</accconst>
+        <useconst>None. Acknowledgment of the originating agencies would be appreciated in products derived from these data.</useconst>
+        <ptcontac>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>FDEP, Division of Environmental Assessment and Restoration, Office of Watershed Services</cntorg>
+                    <cntper>Andrew Morris</cntper>
+                </cntorgp>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>2600 Blair Stone Rd</address>
+                    <city>Tallahassee</city>
+                    <state>FL</state>
+                    <postal>32399-2400</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntvoice>850-245-8426</cntvoice>
+                <cntemail>Andrew.Morris@dep.state.fl.us</cntemail>
+            </cntinfo>
+        </ptcontac>
+        <datacred>USGS (The National Hydrography Dataset)</datacred>
+        <native>Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.2.2.3552</native>
+    </idinfo>
+    <dataqual>
+        <lineage>
+            <srcinfo>
+                <srccite>
+                    <citeinfo>
+                        <title>Hydrographic_Features_24_Areas</title>
+                    </citeinfo>
+                </srccite>
+                <srcscale>24</srcscale>
+                <typesrc>None</typesrc>
+                <srccitea>Hydrographic_Features_24_Areas</srccitea>
+            </srcinfo>
+            <procstep>
+                <procdesc>Updated dataset acquired by BIS/GIS Section from Ron Hughes and inserted in ArcSDE. Metadata updated</procdesc>
+            </procstep>
+            <procstep>
+                <procdesc>Devan Branscum added more lakes at the request of Lou Ley in the Central District.</procdesc>
+            </procstep>
+            <procstep>
+                <procdesc>Devan Branscum added another lake and modified several others at the request of Lou Ley in the Central District.</procdesc>
+            </procstep>
+            <procstep>
+                <procdesc>Devan Branscum added 9 lakes and modified others at the request of Lou Ley in the Central District.</procdesc>
+            </procstep>
+            <procstep>
+                <procdesc>GNIS Lake Points were used as reference points to find the lakes. The GNIS points were then checked against the 1995 Digital Ortho Quadrangles (DOQs). The points were then moved if necessary to represent the center of the lakes, or the point most likely to remain water during drought. Other points were added to represent lakes that did not have GNIS points. The names of the points were then checked against the Digital Raster Graphics and other resources. The USGS Hydrography layer was then clipped to the point coverage, so that there was a layer of just the polygons that intersected the points. The polygon coverage was then cleaned up to match the 1995 DOQs and given the appropriate name from the point coverage. The lakes that did not have names were sent to the respective Water Management District lake biologists for QA/QC. Additional QA/QC included the following: A LINK field was developed to ensure point + polygon correspondence 373 Duplicate Names were investigated 252 names had blank spaces before the Name that had to be removed County Names were compared to DEP Standards Unnecessary fields were removed</procdesc>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection</cntorg>
+                            <cntper>Devan R. Branscum</cntper>
+                        </cntorgp>
+                        <cntvoice>850/245-8542</cntvoice>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Devan Branscum added 2 lakes (Lake Orienta and Lake Seminary) at the request of Lou Ley in the Central District.</procdesc>
+            </procstep>
+            <procstep>
+                <procdesc>There are 1058 records that were removed from the 4329 found in the original DataMiner Lakes layer. 596 new lake features were collected from the NHD (National Hydrography Dataset) and added to the Dataminer SDE Lakes layer. Those NHD files can be found in the following directory: \\gisraid\gissub\gopalan_h\NHDinGEO\24k on the Floridadep network.</procdesc>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP), WRM</cntorg>
+                            <cntper>Mark Zawistoski</cntper>
+                        </cntorgp>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Extracted only the named lakes or reservoirs from the NHD (1:24K) statewide download of March 17th 2015.</procdesc>
+                <procdate>20150317</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>FDEP, Division of Environmental Assessment and Restoration, Office of Watershed Services</cntorg>
+                            <cntper>Andrew Morris</cntper>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntvoice>850-245-8426</cntvoice>
+                        <cntemail>Andrew.Morris@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+            <procstep>
+                <procdesc>Updated data obtained from DEAR and updated the same in the GIS library.</procdesc>
+                <procdate>20150409</procdate>
+                <proccont>
+                    <cntinfo>
+                        <cntorgp>
+                            <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                        </cntorgp>
+                        <cntaddr>
+                            <addrtype>mailing and physical</addrtype>
+                            <address>2600 Blair Stone Rd MS 6520</address>
+                            <city>Tallahassee</city>
+                            <state>FL</state>
+                            <postal>32399-2400</postal>
+                            <country>US</country>
+                        </cntaddr>
+                        <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+                    </cntinfo>
+                </proccont>
+            </procstep>
+        </lineage>
+    </dataqual>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>GT-polygon composed of chains</sdtstype>
+                <ptvctcnt>3859</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>DEP.LAKES_AREAS</enttypl>
+            </enttyp>
+            <attr>
+                <attrlabl>PERIMETER</attrlabl>
+                <attrdef>In meters, the perimeter of the lake polygon.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>NAME</attrlabl>
+                <attrdef>Lake name derived by referencing all existing data sources and QA review by local FDEP district field biologists.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>COUNTY</attrlabl>
+                <attrdef>Florida county name in all capital letters.</attrdef>
+            </attr>
+            <attr>
+                <attrlabl>LINK</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE</attrlabl>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                    					
+                    <udom>Coordinates defining the features.</udom>
+                    				
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>OBJECTID</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                    					
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                    				
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE.AREA</attrlabl>
+                <attrdef>Area of the feature in internal units squared</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                    					
+                    <udom>Coordinates defining the features.</udom>
+                    				
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE.LEN</attrlabl>
+                <attrdef>Length of the feature in internal units</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                    					
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                    				
+                </attrdomv>
+            </attr>
+        </detailed>
+        <overview>
+            <eaover>The National Hydrography Dataset is a comprehensive set of digital spatial data that encodes information about naturally occurring and constructed bodies of water, paths through which water flows, and related entities.  The information encoded about features includes a feature date, classification by type, other characteristics, a unique common identifier, the feature length or area, and (rarely) elevation of the surface of water pools and a description of the stage of the elevation.  For reaches, encoded information includes a reach code.  Names and their identifiers in the Geographic Names Information System, are assigned to most feature types.  The direction of flow is encoded for networked features.  The data also contains relations that encode metadata, and information that supports the exchange of future updates and improvements to the data.  The names and  definitions of all feature types, characteristics, and values are in the Standards for National Hydrography Dataset:  Reston, Virginia, U.S. Geological Survey, 1999.  The document is available online through http://mapping.usgs.gov/standards/.</eaover>
+            <eadetcit>The names and definitions of all feature types, characteristics, and values are in U.S. Geological Survey, 1999, Standards for National Hydrography Dataset High Resolution:  Reston, Virginia, U.S. Geological Survey.  The document is available online through http://mapping.usgs.gov/standards/.  Information about tables and fields in the data are available from the user documentation for the National Hydrography Dataset at http://nhd.usgs.gov.  The National Map - Hydrography Fact Sheet is also available at: http://erg.usgs.gov/isb/pubs/factsheets/fs06002.html.</eadetcit>
+        </overview>
+    </eainfo>
+    <metainfo>
+        <metd>20150409</metd>
+        <metc>
+            <cntinfo>
+                <cntorgp>
+                    <cntorg>Florida Department of Environmental Protection (FDEP) OTIS/GIS Section</cntorg>
+                </cntorgp>
+                <cntaddr>
+                    <addrtype>mailing and physical</addrtype>
+                    <address>2600 Blair Stone Rd</address>
+                    <address>MS 6520</address>
+                    <city>Tallahassee</city>
+                    <state>FL</state>
+                    <postal>32399-2400</postal>
+                    <country>US</country>
+                </cntaddr>
+                <cntemail>GIS.Librarian@dep.state.fl.us</cntemail>
+            </cntinfo>
+        </metc>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>

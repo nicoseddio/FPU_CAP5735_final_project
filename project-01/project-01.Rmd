@@ -1,0 +1,241 @@
+---
+title: "Mini Project 1"
+author: "Nico Seddio"
+date: "2026-05-29"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float: true
+---
+
+# Setup
+
+```{r setup, message=FALSE}
+library(tidyverse)
+# install.packages("plotly")
+library(plotly)
+marathon <- read_csv('../data/marathon_results_2017.csv')
+# Fix column name
+marathon <- marathon %>% mutate(MF = `M/F`)
+```
+
+Looks like more information can be found [on kaggle](https://www.kaggle.com/datasets/rojour/finishers-boston-marathon-2017):
+
+> This is a list of the finishers of the Boston Marathon of 2017. [...] It contains the name, age, gender, country, city and state (where available), times at 9 different stages of the race, expected time, finish time and pace, overall place, gender place and division place.
+
+# Visualizations
+
+## Count of Runners Within a Division Placement
+
+Even though the Division variable is a placement within the Division rather than 
+a Division identifier, we can still look for neat trends on where runners tend 
+to score within their division.
+
+```{r division_placements, fig.alt="Smoothed line chart of how many finishers hold each division-placement number. Count peaks at the lowest placement numbers and tapers off as the placement number grows."}
+marathon %>% 
+  rename(division_placement_number = Division) %>% 
+  group_by(division_placement_number) %>% 
+  summarise(count_in_placement=n()) %>% 
+  ggplot(aes(division_placement_number,count_in_placement)) +
+  geom_smooth(se=FALSE) +
+  ylab("Count In Placement") +
+  xlab("Division Placement Number") +
+  labs(title = "Count of Runners in a Division Placement") +
+  theme_minimal()
+```
+
+## Runner Time Increase in the Second Half
+
+Feedback given to me about the **Count of Runners Within a Division Placement** 
+chart above informed me that the chart is based on ranking values and is less 
+informative than the other charts in this project.
+
+In an effort to find a more interesting chart, I instead wanted to see how 
+runners second half time compared to their first half, whether they sped up or 
+slowed down. Using the `Half` and `Official Time` values, I calculated the 
+difference between runner first half and second half times and plotted it as a 
+density similar to many of the charts in `project-03`. A positive difference 
+indicates a slowdown (adding time to the second half over the first half). The 
+distribution below shows the majority of runners, both men and women, slowed 
+down in the second half of the marathon -- although there were some that sped up 
+(negative difference in second half), and these are interesting too.
+
+```{r slowdown_plot, fig.alt="Density plot of the second-half slowdown in minutes for men and women in the 2017 Boston Marathon. Both distributions are centered well to the right of zero, near 14 minutes. The curves track each other closely through the peak, but men have a heavier right tail of severe slowdowns while women's distribution is more concentrated."}
+marathon %>%
+  mutate(
+    first_half_sec = as.numeric(Half),
+    second_half_sec = as.numeric(`Official Time`) - first_half_sec,
+    slowdown_min = (second_half_sec - first_half_sec) / 60
+  ) %>%
+  filter(!is.na(slowdown_min), MF %in% c("M", "F")) %>%
+  mutate(Gender = recode(MF, M = "Men", F = "Women")) %>% 
+  ggplot(aes(slowdown_min, fill = Gender, linetype = Gender)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_viridis_d() +
+  coord_cartesian(xlim = c(-10, 40)) +
+  labs(
+    title = "Runner Time Increase in the Second Half",
+    x = "Second-half slowdown (minutes)",
+    y = "Density", fill = "", linetype = ""
+  ) +
+  theme_minimal()
+```
+
+## Runner Gender Demographic of Top 10 Countries by Participants
+
+```{r top_10_countries_with_gender, fig.alt="Stacked bar chart of the ten most-represented countries (excluding USA and Canada) among 2017 Boston Marathon finishers, each bar split by runner sex. Most countries send predominantly male finishers, though the female share varies.", message=FALSE}
+
+marathon %>% 
+  inner_join(marathon %>% 
+    group_by(Country) %>% 
+    summarise(runner_count=n()) %>% 
+    # USA and CAN are pretty big outliers, let's remove them
+    filter(!(Country %in% c("USA","CAN"))) %>% 
+    arrange(desc(runner_count))  %>% 
+    top_n(10), 
+    by = join_by(Country)) %>% 
+  ggplot(aes(x=fct_infreq(Country),fill = MF)) +
+  geom_bar() +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  labs(
+    title = "Runner Gender Demographic of Top 10 Countries by Participants",
+    caption = "Note: USA and CAN excluded from Top 10 as outliers",
+    x = "Country",
+    y = "Runners in Gender")
+```
+
+## Redesigning a Bad Chart (_After_/Before)
+
+Using a continuous scale is important in the stacked bar chart above. 
+The chart below is an example of this chart done badly: using a logarithmic scale 
+for the y-axis results in demographic splits that look too close to normal. If we
+wanted to create a chart that included USA and CAN like this one, it might be 
+better to create a similar chart with only the total runners on the logarithmic 
+scale, and then explore male-female demographics of countries on something like 
+a density chart instead.
+
+```{r top_12_countries_log, fig.alt="Stacked bar chart of the ten most-represented countries among 2017 Boston Marathon finishers, each bar split by runner sex. Due to the logarithmic scaling of the y-axis, the differences between the male and female demographics from each country are misleading compared to the previous chart.", message=FALSE}
+
+marathon %>% 
+  inner_join(marathon %>% 
+    group_by(Country) %>% 
+    summarise(runner_count=n()) %>% 
+    arrange(desc(runner_count))  %>% 
+    top_n(12), 
+    by = join_by(Country)) %>% 
+  ggplot(aes(x=fct_infreq(Country),fill = MF)) +
+  geom_bar() +
+  scale_fill_viridis_d() +
+  scale_y_log10(label = scales::comma) +
+  theme_minimal() +
+  labs(
+    title = "Runner Gender Demographic of Top 12 Countries by Participants",
+    x = "Country",
+    y = "Runners in Gender")
+```
+
+## Average Pace by Average Age in Country
+
+Scatter plot of countries by average finisher pace and average age, point shape 
+and color showing participant count. This chart initially had only color encoding
+the number of participants; shape was added as the primary identifier instead 
+with color acting as a helpful differentiation. The interactivity of this plot
+allows users to hover over individual points even with visually cluttering labels
+to see exactly which country and values the point represents.
+
+```{r avg_pace_age_country, fig.alt="Scatter plot of countries by average finisher pace (x) and average age (y), point color showing participant count. Most countries cluster near a 9-minute pace at ages 40 to 45; fast, low-participation outliers like Kenya and Ethiopia sit at the quick end."}
+avg_pace_age_country_scatter <- marathon %>% 
+  group_by(Country) %>% 
+  summarise(
+    avg_pace = mean(Pace), 
+    avg_age = mean(Age), 
+    part_count=n()) %>% 
+  mutate(part_cat = case_when(
+    part_count <= 3 ~ "3 or less",
+    part_count <= 10 ~ "10 or less",
+    part_count <= 100 ~ "100 or less",
+    part_count <= 1000 ~ "1000 or less",
+    .default = "More than 1000")) %>% 
+  ggplot(aes(
+    avg_pace,
+    avg_age,
+    color = part_cat,
+    shape = part_cat,
+    label = Country)) +
+  geom_point(size = 2) +
+  geom_text(
+    aes(label = ifelse(
+      avg_pace < 400 | 
+      avg_age > 55 | 
+      avg_age < 35 | 
+      avg_pace > 650, 
+      Country,""),x=avg_pace+18), 
+    show.legend = FALSE) +
+  xlim(c(300,720)) +
+  labs(
+    title = "Average Pace by Average Age in Country",
+    shape = "Number of Participants",
+    x = "Average Runner Pace (seconds)",
+    y = "Average Runner Age (years)") +
+  guides(
+    shape = guide_legend(override.aes = list(size = 4)),
+    color = "none") +
+  scale_color_viridis_d(end = 0.8) +
+  theme_minimal()
+#avg_pace_age_country_scatter
+ggsave("../figures/project-01-marathon-pace-age.png", width = 8, height = 5, dpi = 150)
+ggplotly(avg_pace_age_country_scatter)
+htmlwidgets::saveWidget(ggplotly(avg_pace_age_country_scatter),"interactive_avg_pace_age_country_scatter.html", selfcontained = TRUE)
+```
+
+
+
+
+# Report
+
+## On Knowing Your Data
+
+Before plotting I confirmed what the dataset actually was. `Bib` was clearly a 
+unique ID, but `Division`, `M/F`, and `Country` were ambiguous until a Kaggle 
+source confirmed this is a single race — the **2017 Boston Marathon** — and that 
+`Division` is a placement *within* a division, not a division label. Establishing 
+that up front kept me from misreading a ranking column as a category.
+
+## How the Project Evolved
+
+My first chart counted runners at each division-placement number. Feedback 
+confirmed it was the weakest of the set: it plots a *ranking*, not a measured 
+quantity, so the smooth curve says more about how placements are assigned than 
+about the runners. I chose to keep it for comparison, but also add another chart 
+with a measured variable: each runner's *second-half slowdown* 
+(`Official Time` minus twice the `Half` split). 
+
+## What the Charts Show
+
+- **Second-half slowdown.** Nearly every finisher, men and women alike, ran a 
+positive split — slowing by roughly 14 minutes in the back half. The two 
+distributions track closely, with men showing a somewhat heavier tail of large 
+slowdowns.
+
+- **Gender by country.** Among the most-represented countries (excluding the 
+USA and Canada), men outnumber women everywhere, though the female share varies. 
+There is also a version of this chart attempting to include USA and CAN via a 
+logarithmic scale, as an example of a chart done poorly for the 
+**before/after redesign** requirement.
+
+- **Pace vs. age by country.** Most countries cluster near a ~9-minute pace 
+around age 40–45. The few fast outliers also have very low participant counts, 
+so their averages most likely reflect small, self-selected fields rather than a 
+national trend. The participant-count color makes that caveat visible, and the 
+interactive version lets a reader hover any point for its exact pace, age, and 
+count instead of estimating from position.
+
+## Bringing It Together
+
+Read together, the charts sketch *who* runs Boston and *how*: an international 
+but male-skewed field, mostly in its 40s, that overwhelmingly slows in the second 
+half. Averages and rankings can imply stories the data can't support, so the 
+trustworthy findings here are the well-populated patterns (the near-universal 
+positive split) while the eye-catching outliers are best treated as hypotheses.

@@ -1,0 +1,237 @@
+---
+title: "project-03"
+author: "Nico Seddio"
+date: "2026-06-19"
+output:
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float: true
+---
+
+# Setup
+
+```{r setup, message=FALSE}
+library(tidyverse)
+#install.packages("plotly")
+library(plotly)
+```
+
+# PART 1: Density Plots
+
+```{r read_weather, message=FALSE}
+weather_tpa <- read_csv("../data/tpa_weather_2022.csv") %>%
+  mutate(month_name = factor(month.name[month], levels = month.name))
+```
+
+## (a) Faceted Histogram of Max Temperatures
+
+A facet wrap histogram (using `binwidth = 3`) of count of days each month having 
+a maximum temperature.
+
+```{r p1a, fig.alt="A grid of twelve histograms, one per month, showing the distribution of daily maximum temperatures at Tampa airport in 2022. Winter months (January, February) are centered in the 60s-70s Fahrenheit and are more spread out, while summer months (June through September) are tightly concentrated in the low 90s."}
+weather_tpa %>% 
+  ggplot(aes(max_temp, fill = month_name)) +
+  geom_histogram(binwidth = 3, color = "white") +
+  facet_wrap(~ month_name) +
+  scale_fill_viridis_d(option = "viridis") +
+  labs(title = "Daily Maximum Temperatures at TPA, 2022",
+       x = "Maximum temperature (°F)", 
+       y = "Number of Days") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+
+## (b) Density of Max Temperatures
+
+A density plot, without grouping by month.
+
+```{r p1b, fig.alt="Density curve of daily maximum temperature across all months. The curve peaks highest around the high 80s and also the low 90s."}
+weather_tpa %>% 
+  ggplot(aes(max_temp)) +
+  geom_density(bw = 0.5, linewidth = 0.7, fill = "grey") +
+  labs(title = "Density of Daily Maximum Temperatures (TPA, 2022)",
+       x = "Maximum temperature (°F)", 
+       y = "Density") +
+  theme_minimal()
+```
+
+## (c) Faceted Density of Max Temperatures
+
+Another facet wrap, this time using density plots.
+
+```{r p1c, fig.alt="A grid of twelve density plots, one per month, of daily maximum temperature. The shape and location of each month's curve is easy to compare: winter months are wide and centered lower, summer months are narrow and centered near 92 degrees."}
+weather_tpa %>% 
+  ggplot(aes(max_temp, fill = month_name)) +
+  geom_density() +
+  facet_wrap(~ month_name) +
+  scale_fill_viridis_d() +
+  labs(
+    title = "Density of Daily Maximum Temperatures by Month (TPA, 2022)",
+    x = "Maximum temperature (°F)", 
+    y = "Density") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+## (d) Ridgeline Plot with Median Lines
+
+Using the `{ggridges}` package and the `geom_density_ridges()` function with 
+close attention to the `quantile_lines` and `quantiles` parameters. The plot 
+below uses the `plasma` option (color scale) for the `viridis` palette.
+
+```{r p1d, fig.alt="A ridgeline plot with one density ridge per month stacked vertically from January at the bottom to December at the top. Each ridge is filled along a plasma color gradient from dark purple at cool temperatures to bright yellow at hot temperatures, with a vertical line marking each month's median. The summer ridges are narrow and shifted far to the warm end.", message=FALSE}
+library(ggridges)
+weather_tpa %>% 
+  ggplot(aes(
+    x = max_temp,
+    y = month_name,
+    fill = after_stat(x))) +
+  geom_density_ridges_gradient(
+    quantile_lines = TRUE, 
+    quantiles = 2) +
+  scale_fill_viridis_c(option = "plasma") +
+  labs(
+    title = "Distribution of Daily Maximum Temperatures by Month (TPA, 2022)",
+    x = "Maximum temperature (°F)",
+    y = NULL, fill = NULL) +
+  theme_ridges()
+```
+
+## (e) Precipitation (Interactive)
+
+Total monthly precipitation as a column chart; as noted, values of -99.9 for 
+temperature or -99.99 for precipitation represent missing data. The interactivity 
+of this chart adds granularity without clutter: users can hover over each bar to 
+see the exact total inches of precipitation that month. Without the interactivity 
+this granularity would require labeling the individual bars with their 
+precipitation values.
+
+```{r p1e, fig.alt="A column chart of total monthly precipitation in inches at Tampa airport in 2022, colored by amount on a viridis scale. Rainfall is low from November through May, then spikes dramatically across June, July, August and September before dropping off, reflecting Florida's summer wet season."}
+precip_plot <- weather_tpa %>%
+  filter(precipitation >= 0) %>%
+  group_by(month_name) %>%
+  summarise(total_precip = sum(precipitation), .groups = "drop") %>% 
+  ggplot(aes(month_name, total_precip, fill = total_precip)) +
+  geom_col() +
+  scale_fill_viridis_c(option = "viridis") +
+  labs(title = "Total Monthly Precipitation at TPA, 2022",
+       x = NULL, y = "Total precipitation (inches)", fill = "Inches") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(precip_plot)
+htmlwidgets::saveWidget(ggplotly(precip_plot),"interactive_precip_plot.html", selfcontained = TRUE)
+```
+
+# PART 2: Visualizing Text Data — Billboard Top 100 Lyrics (2015)
+
+I chose the **Billboard Top 100** lyrics for 2015 because I wanted to work with 
+a music dataset. Each row is a charting song with its rank, artist, and full lyrics.
+
+For text analysis, I brought in the 
+[`tidytext`](https://cran.r-project.org/web/packages/tidytext/index.html) package 
+for parsing the song lyrics.
+
+```{r read_bb, message=FALSE}
+library(tidytext)
+bb <- read_csv("../data/BB_top100_2015.csv")
+```
+
+## Most Frequent Words
+
+I started by using the `unnest_tokens` function from `tidytext` to tokenize the 
+lyrics so that I could count the tokens. 
+
+```{r bb_freq_1, fig.alt="A horizontal bar chart of the fifteen most frequent words across 2015 Billboard Top 100 lyrics, sorted from most to least frequent. The top words are dominated by common filler words: i, you, the, me, it, and so on."}
+bb %>% 
+  unnest_tokens(word, Lyrics) %>%
+  count(word, sort = TRUE) %>%
+  slice_max(n, n = 15) %>%
+  mutate(word = fct_reorder(word, n)) %>%
+  ggplot(aes(n, word, fill = n)) +
+  geom_col() +
+  scale_fill_viridis_c() +
+  labs(
+    title = "Most Frequent Words in 2015 Billboard Top 100 Lyrics",
+    x = "Count", 
+    y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+Not so interesting, this more seems like a list of most frequent general English 
+words. `tidytext` also includes a `stop_words` dataset that can help filter 
+these out with anti-join.
+
+```{r bb_freq_2, fig.alt="A horizontal bar chart of the fifteen most frequent words across 2015 Billboard Top 100 lyrics after removing stop words, sorted from most to least frequent. The top words are dominated by less common filler words and some more interesting words: im, dont, love, baby, wanna, youre."}
+bb %>% 
+  unnest_tokens(word, Lyrics) %>%
+  anti_join(stop_words, by = "word") %>% 
+  count(word, sort = TRUE) %>%
+  slice_max(n, n = 15) %>%
+  mutate(word = fct_reorder(word, n)) %>%
+  ggplot(aes(n, word, fill = n)) +
+  geom_col() +
+  scale_fill_viridis_c() +
+  labs(
+    title = "Most Frequent Words in 2015 Billboard Top 100 Lyrics",
+    x = "Count", 
+    y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+A little more interesting, but we still have variants of stop words included 
+among the content. Let's create a custom list to filter those out too.
+
+```{r bb_freq_3, fig.alt="A horizontal bar chart of the fifteen most frequent words across 2015 Billboard Top 100 lyrics after removing more stop words, sorted from most to least frequent. Love is the clear leader, followed by baby, time, girl, and money, reflecting the themes of mainstream pop and hip-hop."}
+custom_stops <- tibble(word = c(
+  "im", "dont", "youre", "ive", "cant", "wont", "didnt", "aint", "ill", "id",
+  "thats", "its", "hes", "shes", "theyre", "gotta", "gonna", "wanna",
+  "yeah", "oh", "na", "la", "uh", "ooh", "woah", "whoa", "hey", "mmm",
+  "yo", "ya", "em", "ck", "bout"))
+
+bb %>% 
+  unnest_tokens(word, Lyrics) %>%
+  anti_join(stop_words, by = "word") %>% 
+  anti_join(custom_stops, by = "word") %>% 
+  count(word, sort = TRUE) %>%
+  slice_max(n, n = 15) %>%
+  mutate(word = fct_reorder(word, n)) %>%
+  ggplot(aes(n, word, fill = n)) +
+  geom_col() +
+  scale_fill_viridis_c() +
+  labs(
+    title = "Most Frequent Words in 2015 Billboard Top 100 Lyrics",
+    x = "Count", 
+    y = NULL) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+ggsave("../figures/project-03-billboard-most-frequent.png", width = 8, height = 5, dpi = 150)
+```
+
+This graph gives us a much clearer picture of the most common content words in 
+the lyrics, with **love** as the recurring most common, followed by baby, time, 
+girl, and money, reflecting the themes of mainstream pop and hip-hop.
+
+```{r bb_count}
+bb %>% 
+  unnest_tokens(word, Lyrics) %>%
+  anti_join(stop_words, by = "word") %>% 
+  anti_join(custom_stops, by = "word") %>% 
+  summarise(
+    total_words = n(), 
+    total_distinct_words = n_distinct(word))
+```
+
+## Redesigning a Bad Chart (Before/After)
+
+The **Most Frequent Words** charts above also demonstrate a before/after chart 
+redesign. Initially the data shown in the chart was not particularly useful for 
+the story the data was trying to tell: the most common content of song lyrics. 
+But with some data exploration and refinement, the final chart provides a much 
+more interesting picture of the commonality of hip hop love songs, with minimal 
+changes to the chart itself required.
