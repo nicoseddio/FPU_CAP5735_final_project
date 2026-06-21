@@ -138,8 +138,14 @@ a horizontal bar chart of the fifteen most frequent words across
    ```
 3. Knit each `project-0X/project-0X.Rmd`. Knit to `HTML` to see interactive output,
     knit to `github_document` to see markdown with static charts. These are kept
-    separate so that Github / markdown files display images 
-    instead of broken interactive chart html.
+    separate so that Github / markdown files display images instead of broken 
+    interactive chart html. Knitting to one type or the other via the GUI deletes 
+    the outputs of the other types; alternatively, run the following 
+    commands from the R `Console` within the project: 
+    - `rmarkdown::render("project-01/project-01.Rmd", output_format = "all")`
+    - `rmarkdown::render("project-02/project-02.Rmd", output_format = "all")`
+    - `rmarkdown::render("project-03/project-03.Rmd", output_format = "all")`
+      
 
 ## AI Use Statement
 

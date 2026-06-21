@@ -30,8 +30,7 @@ library(plotly)
 marathon <- read_csv('../data/marathon_results_2017.csv')
 ```
 
-    ## Warning: One or more parsing issues, call `problems()` on your data frame for details,
-    ## e.g.:
+    ## Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
     ##   dat <- vroom(...)
     ##   problems(dat)
 

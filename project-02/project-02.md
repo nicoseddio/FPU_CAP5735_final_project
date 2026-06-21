@@ -20,9 +20,7 @@ library(plotly)
 lakes <- st_read("../data/Florida_Lakes/Florida_Lakes.shp")
 ```
 
-    ## Reading layer `Florida_Lakes' from data source 
-    ##   `/Users/nicoseddio/Downloads/FPU_CAP5735_final_project/data/Florida_Lakes/Florida_Lakes.shp' 
-    ##   using driver `ESRI Shapefile'
+    ## Reading layer `Florida_Lakes' from data source `/Users/nicoseddio/Downloads/FPU_CAP5735_final_project/data/Florida_Lakes/Florida_Lakes.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 4243 features and 6 fields
     ## Geometry type: MULTIPOLYGON
     ## Dimension:     XY
@@ -33,9 +31,7 @@ lakes <- st_read("../data/Florida_Lakes/Florida_Lakes.shp")
 counties <- st_read("../data/Florida_Counties/Florida_Counties.shp")
 ```
 
-    ## Reading layer `Florida_Counties' from data source 
-    ##   `/Users/nicoseddio/Downloads/FPU_CAP5735_final_project/data/Florida_Counties/Florida_Counties.shp' 
-    ##   using driver `ESRI Shapefile'
+    ## Reading layer `Florida_Counties' from data source `/Users/nicoseddio/Downloads/FPU_CAP5735_final_project/data/Florida_Counties/Florida_Counties.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 67 features and 7 fields
     ## Geometry type: MULTIPOLYGON
     ## Dimension:     XY
@@ -46,9 +42,7 @@ counties <- st_read("../data/Florida_Counties/Florida_Counties.shp")
 schools <- st_read("../data/Public_Private_Schools_in_Florida-2017/gc_schools_sep17.shp")
 ```
 
-    ## Reading layer `gc_schools_sep17' from data source 
-    ##   `/Users/nicoseddio/Downloads/FPU_CAP5735_final_project/data/Public_Private_Schools_in_Florida-2017/gc_schools_sep17.shp' 
-    ##   using driver `ESRI Shapefile'
+    ## Reading layer `gc_schools_sep17' from data source `/Users/nicoseddio/Downloads/FPU_CAP5735_final_project/data/Public_Private_Schools_in_Florida-2017/gc_schools_sep17.shp' using driver `ESRI Shapefile'
     ## Simple feature collection with 8552 features and 51 fields
     ## Geometry type: POINT
     ## Dimension:     XY
@@ -123,13 +117,13 @@ lakes_by_county %>% head(5)
     ## Bounding box:  xmin: -86.00468 ymin: 27.95441 xmax: -80.57845 ymax: 30.55578
     ## Geodetic CRS:  WGS 84
     ## # A tibble: 5 × 4
-    ##   COUNTY   lake_count total_lake_area                                   geometry
-    ##   <chr>         <int>           <dbl>                         <MULTIPOLYGON [°]>
-    ## 1 ALACHUA          68      139982755. (((-82.40637 29.62032, -82.40656 29.62039…
-    ## 2 BAKER             3        7301007. (((-82.28798 30.55528, -82.28801 30.55538…
-    ## 3 BAY              46       29948288. (((-85.71071 30.40863, -85.7106 30.40868,…
-    ## 4 BRADFORD         11       15876511. (((-82.05423 29.79646, -82.05382 29.79645…
-    ## 5 BREVARD          35       53529147. (((-80.86448 28.63067, -80.86458 28.63085…
+    ##   COUNTY   lake_count total_lake_area                                                                                geometry
+    ##   <chr>         <int>           <dbl>                                                                      <MULTIPOLYGON [°]>
+    ## 1 ALACHUA          68      139982755. (((-82.40637 29.62032, -82.40656 29.62039, -82.40679 29.62038, -82.40718 29.62038, -...
+    ## 2 BAKER             3        7301007. (((-82.28798 30.55528, -82.28801 30.55538, -82.28808 30.55544, -82.28833 30.55549, -...
+    ## 3 BAY              46       29948288. (((-85.71071 30.40863, -85.7106 30.40868, -85.71053 30.40889, -85.7105 30.40889, -85...
+    ## 4 BRADFORD         11       15876511. (((-82.05423 29.79646, -82.05382 29.79645, -82.05347 29.7965, -82.05317 29.79665, -8...
+    ## 5 BREVARD          35       53529147. (((-80.86448 28.63067, -80.86458 28.63085, -80.86466 28.63094, -80.86475 28.63116, -...
 
 #### Group schools into counties
 
@@ -147,13 +141,13 @@ schools_by_county %>% head(5)
     ## Bounding box:  xmin: -85.85879 ymin: 27.90883 xmax: -80.55548 ymax: 30.39436
     ## Geodetic CRS:  WGS 84
     ## # A tibble: 5 × 4
-    ##   COUNTY   school_count total_enrollment                                geometry
-    ##   <chr>           <int>            <dbl>                        <MULTIPOINT [°]>
-    ## 1 ALACHUA           124            33566 ((-82.16952 29.79194), (-82.09225 29.5…
-    ## 2 BAKER              12             4980 ((-82.13119 30.29802), (-82.11622 30.2…
-    ## 3 BAY                75            28862 ((-85.44081 30.36637), (-85.59207 30.2…
-    ## 4 BRADFORD           18             3838 ((-82.16688 30.04016), (-82.07495 30.0…
-    ## 5 BREVARD           249            83712 ((-80.81837 28.3615), (-80.78083 28.34…
+    ##   COUNTY   school_count total_enrollment                                                                                  geometry
+    ##   <chr>           <int>            <dbl>                                                                          <MULTIPOINT [°]>
+    ## 1 ALACHUA           124            33566 ((-82.16952 29.79194), (-82.09225 29.58973), (-82.09092 29.59384), (-82.18792 29.64269...
+    ## 2 BAKER              12             4980 ((-82.13119 30.29802), (-82.11622 30.27716), (-82.12333 30.28557), (-82.12761 30.29), ...
+    ## 3 BAY                75            28862 ((-85.44081 30.36637), (-85.59207 30.25767), (-85.56238 30.24211), (-85.56434 30.24158...
+    ## 4 BRADFORD           18             3838 ((-82.16688 30.04016), (-82.07495 30.04767), (-82.07198 30.04632), (-82.09421 29.99128...
+    ## 5 BREVARD           249            83712 ((-80.81837 28.3615), (-80.78083 28.34936), (-80.76889 28.35501), (-80.74217 28.30523)...
 
 ## Visualizations
 
@@ -263,8 +257,7 @@ central_florida <- counties %>% ggplot() +
 central_florida
 ```
 
-    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
-    ## give correct results for longitude/latitude data
+    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not give correct results for longitude/latitude data
 
 <img src="project-02_files/figure-gfm/map_florida-1.png" alt="Map of central Florida from Pinellas to Osceola, Volusia to Hardee, with distribution of schools and lakes. Florida Poly is pointed out towards the center of the map."  />
 
@@ -272,8 +265,7 @@ central_florida
 ggsave("../figures/project-02-central-florida.png", width = 8, height = 5, dpi = 150)
 ```
 
-    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
-    ## give correct results for longitude/latitude data
+    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not give correct results for longitude/latitude data
 
 Interactive version of the above chart. Adding interaction here is neat
 because it allows us to start the visualization centered on where we
@@ -294,8 +286,7 @@ if (knitr::pandoc_to(c("gfm", "markdown_github", "commonmark"))) {
 }
 ```
 
-    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
-    ## give correct results for longitude/latitude data
+    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not give correct results for longitude/latitude data
 
 <img src="project-02_files/figure-gfm/map_florida_interactive-1.png" alt="Interactive version of the map of central Florida from Pinellas to Osceola, Volusia to Hardee, with distribution of schools and lakes. Florida Poly is pointed out towards the center of the map."  />
 
